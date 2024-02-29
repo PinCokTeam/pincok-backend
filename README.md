@@ -1,1 +1,1 @@
-# fin-backend
+# pincok-backend
