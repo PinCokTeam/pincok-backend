@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'contents',
     'crew',
     'member',
-]
-
+    ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
