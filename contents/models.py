@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class Contents_table(models.Model):
+class Contents(models.Model):
     id = models.AutoField(primary_key=True)
     member_id = models.ForeignKey(to='Member', on_delete=models.CASCADE)
     crew_id = models.ForeignKey(to='Crew', on_delete=models.CASCADE)
