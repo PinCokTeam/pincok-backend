@@ -1,26 +1,20 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 from rest_framework.views import APIView
 
 from contents.models import Contents
-from contents.serializsers import Menu
+from contents.serializser import ContentsSerializer, ContentsListSerializer
 
 
 # Create your views here.
-
-class ContentsSerializer(ModelSerializer):
-    class Meta:
-        model = Contents
-        fields = [Menu.contentfields]
 
 
 
 class ContentsCreateAPI(APIView):
     def get(self, request):
-        contents = Contents.objects.filter(Contents.title)
-
-        return_data = ContentsSerializer(contents, many=True).data
+        contents = Contents.objects.all()
+        return_data = ContentsListSerializer(contents, many=True).data
 
         return Response(return_data)
 
@@ -43,51 +37,25 @@ class ContentsCreateAPI(APIView):
 
 
 class ContentsDetailAPI(APIView):
-    def get(self, request, member_id, crew_id):
-        if member_id is not None:
-            contents = Contents.objects.get(
-                member_id=member_id
-            )
-
-            return_data = ContentsSerializer(contents).data
-
-            return Response(return_data, status=200)
-
-        elif crew_id is not None:
-            contents = Contents.objects.get(
-                crew_id=crew_id
-            )
-
-            return_data = ContentsSerializer(contents).data
-
-            return Response(return_data, status=200)
-
-        else:
-            return 404
-
+    def get(self, request, contents_id):
+        contents = Contents.objects.get(id=contents_id)
+        return_data = ContentsSerializer(contents).data
+        return Response(return_data, status=200)
 
     def put(self, request, contents_id):
-        if contents_id is not None:
-            contents = Contents.objects.all()
-            contents.put(
-                title=request.data['title'],
-                detail=request.data['detail'],
-                pos_x=request.data['pos_x'],
-                pos_y=request.data['pos_y'],
-            )
-            contents.save()
-            return_data = ContentsSerializer(contents).data
-            return Response(return_data, status=200)
-
-        else:
-            return 404
-
+        serializer = ContentsSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        contents = get_object_or_404(Contents, id=contents_id)
+        contents.update(
+            title=request.data['title'],
+            detail=request.data['detail'],
+            pos_x=request.data['pos_x'],
+            pos_y=request.data['pos_y'],
+        )
+        contents.save()
+        return_data = ContentsSerializer(contents).data
+        return Response(return_data, status=200)
 
     def delete(self, request, contents_id):
-        if contents_id is not None:
-            contents = Contents.objects.get(id=contents_id)
-            contents.delete()
-            return Response(status=204)
-
-        else:
-            return 404
+        get_object_or_404(Contents, id=contents_id).delete()
+        return Response(status=204)
