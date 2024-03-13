@@ -6,7 +6,7 @@ from contents.models import Contents
 class ContentsSerializer(ModelSerializer):
     class Meta:
         model = Contents
-        fields = ['title', 'detail', 'pos_x', 'pos_y']
+        fields = ['id', 'title', 'detail', 'pos_x', 'pos_y']
 
 
 class ContentsListSerializer(ModelSerializer):

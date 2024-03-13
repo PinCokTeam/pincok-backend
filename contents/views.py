@@ -27,8 +27,8 @@ class ContentsCreateAPI(APIView):
             detail=serializer.validated_data['detail'],
             pos_x=serializer.validated_data['pos_x'],
             pos_y=serializer.validated_data['pos_y'],
-            member_id=serializer.validated_data['member_id'],
-            crew_id=serializer.validated_data['crew_id'],
+            # member_id=serializer.validated_data['member_id'],
+            # crew_id=serializer.validated_data['crew_id'],
         )
 
         return_data = ContentsSerializer(contents).data
@@ -38,7 +38,7 @@ class ContentsCreateAPI(APIView):
 
 class ContentsDetailAPI(APIView):
     def get(self, request, contents_id):
-        contents = Contents.objects.get(id=contents_id)
+        contents = get_object_or_404(Contents, id=contents_id)
         return_data = ContentsSerializer(contents).data
         return Response(return_data, status=200)
 
@@ -52,7 +52,6 @@ class ContentsDetailAPI(APIView):
             pos_x=request.data['pos_x'],
             pos_y=request.data['pos_y'],
         )
-        contents.save()
         return_data = ContentsSerializer(contents).data
         return Response(return_data, status=200)
 
