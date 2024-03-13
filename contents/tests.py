@@ -1,9 +1,11 @@
 from django.test import TestCase
-
 from contents.models import Contents
+from rest_framework.test import APIClient
 
 
 class ContentsCreateAPITest(TestCase):
+    client_class: APIClient = APIClient
+
     @classmethod
     def setUpTestData(cls):
         cls.contents = Contents.objects.create(

@@ -9,8 +9,6 @@ from contents.serializser import ContentsSerializer, ContentsListSerializer
 
 # Create your views here.
 
-
-
 class ContentsCreateAPI(APIView):
     def get(self, request):
         contents = Contents.objects.all()
@@ -46,12 +44,11 @@ class ContentsDetailAPI(APIView):
         serializer = ContentsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         contents = get_object_or_404(Contents, id=contents_id)
-        contents.update(
-            title=request.data['title'],
-            detail=request.data['detail'],
-            pos_x=request.data['pos_x'],
-            pos_y=request.data['pos_y'],
-        )
+        contents.title = request.data["title"]
+        contents.detail = request.data["detail"]
+        contents.pos_x = request.data["pos_x"]
+        contents.pos_y = request.data["pos_y"]
+        contents.save()
         return_data = ContentsSerializer(contents).data
         return Response(return_data, status=200)
 
