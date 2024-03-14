@@ -12,4 +12,4 @@ class ContentsSerializer(ModelSerializer):
 class ContentsListSerializer(ModelSerializer):
     class Meta:
         model = Contents
-        fields = ['title']
+        fields = ['id', 'title']

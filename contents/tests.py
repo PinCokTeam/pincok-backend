@@ -21,8 +21,9 @@ class ContentsCreateAPITest(TestCase):
 
         response_data = response.json()
         self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data[0]['id'], self.contents.id)
         self.assertEqual(response_data[0]['title'], self.contents.title)
-        expect_data = ['title']
+        expect_data = ['id', 'title']
         self.assertListEqual(list(response_data[0].keys()), expect_data)
 
     def test_inquiry_contents(self):
